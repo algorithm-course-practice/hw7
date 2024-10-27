@@ -13,7 +13,31 @@ public class HomeWork {
      * <a href="https://acm.timus.ru/problem.aspx?space=1&num=1439">https://acm.timus.ru/problem.aspx?space=1&num=1439</a>
      */
     public List<Integer> getOriginalDoorNumbers(int maxDoors, List<Action> actionList) {
-        return null;
+        if (maxDoors <= 1
+        || maxDoors >= 1000000000
+        || actionList.size() <= 1
+        || actionList.size() >= 100000) {
+            throw new IllegalArgumentException("Некорректные входные данные maxDoors и actionList");
+        }
+        Treap<Integer> treap = new Treap<>();
+        List<Integer> resultList = new ArrayList<>();
+        // формируем первоначальное расположение комнат
+        for (int i = 1; i < maxDoors + 1; i++){
+            treap.add(i);
+        }
+        for (Action action: actionList){
+            List<Integer> order  = treap.inorder().stream()
+                    .map(n->n.split(",")[0]
+                            .substring(1))
+                    .map(Integer::parseInt)
+                    .collect(Collectors.toList());
+            if (action.isLook){
+                resultList.add(order.get(action.doorNumber - 1));
+            } else {
+                treap.remove(order.get(action.doorNumber - 1));
+            }
+        }
+        return resultList;
     }
 
     /**

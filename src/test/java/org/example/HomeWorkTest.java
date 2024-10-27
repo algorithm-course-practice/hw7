@@ -49,19 +49,20 @@ class HomeWorkTest {
         return result;
     }
 
-
     @Test
     void checkFirst() {
         TestCase1 testCase = generateTestCase1();
-
         assertEquals(testCase.expected, homeWork.getOriginalDoorNumbers(testCase.maxDoors, testCase.actionList));
+        assertEquals(testCase.expected, homeWork.getOriginalDoorNumbers(100, testCase.actionList));
+        assertEquals(testCase.expected, homeWork.getOriginalDoorNumbers(100000, testCase.actionList));
+        assertThrows(IllegalArgumentException.class, () -> homeWork.getOriginalDoorNumbers(-100, testCase.actionList));
     }
+
 
     @Test
     void checkSecond(){
-        assertEquals(asList("3 1 5 2 4".split(" ")), homeWork.getLeaveOrder(5, 3));
+        assertEquals(List.of(3, 1, 5, 2, 4), homeWork.getLeaveOrder(5, 3));
     }
-
 
     private TestCase1 generateTestCase1() {
         TestCase1 testCase = new TestCase1();
@@ -98,7 +99,6 @@ class HomeWorkTest {
 
         }
 
-
         public void parseExpected(String output) {
             String[] lines = output.split("(\n|\r|\r\n)");
             Arrays.stream(lines)
@@ -106,5 +106,4 @@ class HomeWorkTest {
                     .forEach(expected::add);
         }
     }
-
 }
