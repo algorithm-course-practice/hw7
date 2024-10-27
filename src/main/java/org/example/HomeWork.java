@@ -1,6 +1,7 @@
 package org.example;
 
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class HomeWork {
@@ -11,7 +12,19 @@ public class HomeWork {
      * <a href="https://acm.timus.ru/problem.aspx?space=1&num=1439">https://acm.timus.ru/problem.aspx?space=1&num=1439</a>
      */
     public List<Integer> getOriginalDoorNumbers(int maxDoors, List<Action> actionList) {
-        return null;
+        Treap<Integer> treap = new Treap<>();
+        for (int i = 1; i < maxDoors + 1; i++) {
+            treap.add(i);
+        }
+
+        List<Integer> result = new ArrayList<>();
+
+        for (Action action : actionList) {
+            Treap.Node<Integer> nodeByIndex = treap.findNodeByIndex(action.doorNumber - 1);
+            if (action.isLook) result.add(nodeByIndex.key);
+            else treap.removeNode(nodeByIndex);
+        }
+        return result;
     }
 
     /**
@@ -27,8 +40,28 @@ public class HomeWork {
      * <b>2</b> 4 _ => 2 <br/>
      * _ <b>4</b> => 4
      */
-    public List<Integer> getLeaveOrder(int maxUnits, int leaveInterval) {
-        return null;
+    public List<String> getLeaveOrder(int maxUnits, int leaveInterval) {
+        /* 1) size = 5; pos = 0; ind to remove = 2
+           2) size = 4; pos = 2; ind to remove = 0
+           3) size = 3; pos = 0; ind to remove = 2
+           4) size = 2; pos = 2; ind to remove = 0
+           5) size = 1; pos = 1; ind to remove = 0
+                    */
+        Treap<Integer> integerTreap = new Treap<>();
+        List<String> result = new ArrayList<>();
+        for (int i = 1; i < maxUnits + 1; i++) {
+            integerTreap.add(i);
+        }
+
+        int pos = 0;
+        for (int i = 0; i < maxUnits - 1; i++) {
+            pos = leaveInterval - pos - 1;
+            Treap.Node<Integer> nodeByIndex = integerTreap.findNodeByIndex(pos);
+            result.add(String.valueOf(nodeByIndex.key));
+            integerTreap.removeNode(nodeByIndex);
+        }
+        result.add(String.valueOf(integerTreap.root.key));
+        return result;
     }
 
 }
