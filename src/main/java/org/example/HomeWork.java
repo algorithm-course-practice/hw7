@@ -1,7 +1,9 @@
 package org.example;
 
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class HomeWork {
 
@@ -28,7 +30,31 @@ public class HomeWork {
      * _ <b>4</b> => 4
      */
     public List<Integer> getLeaveOrder(int maxUnits, int leaveInterval) {
-        return null;
+        if (maxUnits < 1
+                || maxUnits > 100000
+        || leaveInterval < 1
+        || leaveInterval > maxUnits){
+            throw new IllegalArgumentException("Некорректные данные maxUnits и leaveInterval");
+        }
+        List<Integer> result = new ArrayList<>();
+        List<Integer> orderList = new ArrayList<>();
+        for (int i = 1; i < maxUnits + 1; i++){
+            orderList.add(i);
+        }
+        int offset = 0;
+        while (orderList.size() > 1){
+            int numberToDelete = (offset + leaveInterval - 1) % orderList.size();
+            // добавляем в удаляемого солдата в список
+            result.add(orderList.get(numberToDelete));
+            // удаляем найденного солдата из очереди на плацу
+            orderList.remove(orderList.get(numberToDelete));
+            // сохраняем индекс для продолжения удаления солдата
+            offset = numberToDelete;
+        }
+        // добавляем последнего удаляемого солдата
+        result.add(orderList.get(0));
+        return result;
     }
+
 
 }
