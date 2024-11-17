@@ -1,19 +1,15 @@
 package org.example;
 
-import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import org.junit.jupiter.api.Test;
 
-import java.util.*;
-import java.util.function.Consumer;
-import java.util.function.Function;
-import java.util.function.Supplier;
-import java.util.stream.Collectors;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 import static java.util.Arrays.asList;
-import static org.example.Action.destroy;
-import static org.example.Action.look;
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.*;
+
 
 class HomeWorkTest {
 
@@ -23,12 +19,24 @@ class HomeWorkTest {
     void checkFirst() {
         TestCase1 testCase = generateTestCase1();
 
-        assertEquals(testCase.expected, homeWork.getOriginalDoorNumbers(testCase.maxDoors, testCase.actionList));
+        int maxDoors = 20;
+        List<Action> actions = new ArrayList<>();
+        actions.add(Action.parse("L 5"));
+        actions.add(Action.parse("D 5"));
+        actions.add(Action.parse("L 4"));
+        actions.add(Action.parse("L 5"));
+        actions.add(Action.parse("D 5"));
+        actions.add(Action.parse("L 4"));
+        actions.add(Action.parse("L 5"));
+
+        List<Integer> listActual = homeWork.getOriginalDoorNumbers(maxDoors, testCase.actionList);
+        assertEquals(testCase.expected, listActual);
     }
 
     @Test
     void checkSecond(){
-        assertEquals(asList("3 1 5 2 4".split(" ")), homeWork.getLeaveOrder(5, 3));
+        List<Integer> listActual = homeWork.getLeaveOrder(5, 3);
+        assertEquals(asList(3, 1, 5, 2, 4), listActual);
     }
 
 
